@@ -4,10 +4,10 @@ phases:
   pre_build:
     commands:
       - AWS_ACCOUNT_ID=$(echo ${CODEBUILD_BUILD_ARN} | cut -f 5 -d :)
-      - aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.region.amazonaws.com
+      - aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
   build:
     commands:
-      - IMAGE_NAME=$(${AWS_ACCOUNT_ID}/container-lambda-py:latest)
+      - IMAGE_NAME=$(${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/container-lambda-py:latest)
       - docker build -t ${IMAGE_NAME} .
   post_build:
     commands:
